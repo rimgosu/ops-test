@@ -3,6 +3,7 @@ import { Controller, Post, Body, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('users')
 export class AppController {
@@ -32,10 +33,10 @@ export class AppController {
     return { email: registerDto.email };
   }
 
-  // @Post('login')
-  // async login(@Body() loginData: LoginDto) {
-  //   // 로그인 로직
-  // }
+  @Post('login')
+  async login(@Body() loginData: LoginDto) {
+    return this.authService.login(loginData);
+  }
 
   @Get()
   async findAll() {

@@ -1,12 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+// UserRole enum 정의
+export enum UserRole {
+  MEMBER = 'MEMBER',
+  ADMIN = 'ADMIN',
+}
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ unique: true })
-  username: string;
 
   @Column({ unique: true })
   email: string;
@@ -14,6 +17,10 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
-  role: string; // 'MEMBER' 또는 'ADMIN'
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.MEMBER
+  })
+  role: UserRole;
 }

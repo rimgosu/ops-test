@@ -16,10 +16,11 @@ export class UserService {
   }
 
 
-  async createUser(userData: any): Promise<User> {
+  async createUser(userData: any): Promise<void> {
     const user = this.userRepository.create(userData);
-    return this.userRepository.save(user);
+    await this.userRepository.save(user);
   }
+  
 
 
   // 기타 메서드...

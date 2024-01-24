@@ -8,9 +8,11 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { UserService } from './user.service';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -28,6 +30,6 @@ import { JwtStrategy } from './jwt.strategy';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, JwtStrategy],
+  providers: [AppService, AuthService, JwtStrategy, UserService],
 })
 export class AppModule {}

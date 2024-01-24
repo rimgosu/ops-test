@@ -23,13 +23,13 @@ export class AppController {
     const hashedPassword = await this.authService.hashPassword(registerDto.password);
 
     // 사용자 정보 저장
-    const user = await this.userService.createUser({
+    await this.userService.createUser({
       ...registerDto,
       password: hashedPassword,
     });
 
     // 응답 반환 (비밀번호 정보는 제외)
-    return { id: user.id, email: user.email };
+    return { email: registerDto.email };
   }
 
   // @Post('login')
@@ -40,5 +40,6 @@ export class AppController {
   @Get()
   async findAll() {
     // 모든 사용자 조회
+    return 'hello world';
   }
 }

@@ -50,6 +50,11 @@ export class AuthService {
 
   // 저장된 해시와 비밀번호 비교
   async comparePasswords(password: string, storedPasswordHash: string): Promise<boolean> {
+    if (!password || !storedPasswordHash) {
+      throw new Error('Password and hash are required for comparison.');
+    }
+  
     return bcrypt.compare(password, storedPasswordHash);
   }
+  
 }

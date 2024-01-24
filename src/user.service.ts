@@ -20,6 +20,10 @@ export class UserService {
     const user = this.userRepository.create(userData);
     await this.userRepository.save(user);
   }
+
+  async updatePassword(userId: number, newPassword: string): Promise<void> {
+    await this.userRepository.update(userId, { password: newPassword });
+  }
   
 
 

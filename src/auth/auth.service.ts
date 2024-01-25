@@ -5,14 +5,15 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
-  async signIn(email: string, pass: string) {
+  async signIn(email: string, pass: string): Promise<{ access_token: string }> {
     const user = await this.usersService.findByEmail(email);
-    if (user?.password !== pass) {
+    if (!user || !(await this.comparePasswords(pass, user.password))) {
       throw new UnauthorizedException();
     }
     const payload = { username: user.email, sub: user.id };
@@ -20,7 +21,7 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
-
+  
   // 비밀번호 해시 생성
   async hashPassword(password: string): Promise<string> {
     if (!password) {
@@ -34,6 +35,11 @@ export class AuthService {
 
   // 저장된 해시와 비밀번호 비교
   async comparePasswords(password: string, storedPasswordHash: string): Promise<boolean> {
+
+    console.log(password);
+    console.log(storedPasswordHash);
+    
+
     if (!password || !storedPasswordHash) {
       throw new Error('Password and hash are required for comparison.');
     }

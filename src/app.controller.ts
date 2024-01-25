@@ -9,7 +9,7 @@ import { JwtAuthGuard } from './jwt-auth.guard'; // JWT 인증 Guard
 import { ChangePasswordDto } from './dto/change-password.dto';
 
 
-@Controller('users')
+@Controller('user')
 export class AppController {
   constructor(
     private readonly authService: AuthService,

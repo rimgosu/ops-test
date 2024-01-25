@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -9,14 +10,35 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, pass: string) {
-    const user = await this.usersService.findOne(username);
+  async signIn(email: string, pass: string) {
+    const user = await this.usersService.findByEmail(email);
     if (user?.password !== pass) {
       throw new UnauthorizedException();
     }
-    const payload = { username: user.username, sub: user.userId };
+    const payload = { username: user.email, sub: user.id };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
+  // 비밀번호 해시 생성
+  async hashPassword(password: string): Promise<string> {
+    if (!password) {
+      throw new Error('Password is required for hashing.');
+    }
+  
+    const salt = await bcrypt.genSalt();
+    return bcrypt.hash(password, salt);
+  }
+  
+
+  // 저장된 해시와 비밀번호 비교
+  async comparePasswords(password: string, storedPasswordHash: string): Promise<boolean> {
+    if (!password || !storedPasswordHash) {
+      throw new Error('Password and hash are required for comparison.');
+    }
+  
+    return bcrypt.compare(password, storedPasswordHash);
+  }
+
 }

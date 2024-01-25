@@ -20,9 +20,10 @@ export class UsersController {
   constructor(private usersService: UsersService,
               private authService: AuthService) {}
 
-  @Get('userlist')
+  @Get()
   async getAllUsers(@Req() req) {
     // 사용자 역할 확인
+    console.log(req.user.role)
     if (req.user.role !== UserRole.ADMIN) {
       throw new UnauthorizedException('관리자만 접근 가능합니다.');
     }

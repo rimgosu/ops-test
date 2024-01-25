@@ -11,8 +11,8 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findByEmail(email: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { email } });
+  async findByUsername(username: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { username } });
   }
 
 
@@ -23,5 +23,9 @@ export class UsersService {
 
   async updatePassword(userId: number, newPassword: string): Promise<void> {
     await this.userRepository.update(userId, { password: newPassword });
+  }
+
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
   }
 }

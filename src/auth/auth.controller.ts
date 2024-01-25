@@ -25,12 +25,12 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: LoginDto) {
-    return this.authService.signIn(signInDto.email, signInDto.password);
+    return this.authService.signIn(signInDto.username, signInDto.password);
   }
 
   @Patch('change-password')
   async changePassword(@Req() req, @Body() changePasswordDto: ChangePasswordDto) {
-    const user = await this.usersService.findByEmail(req.user.email);
+    const user = await this.usersService.findByUsername(req.user.username);
     if (!user) {
       throw new UnauthorizedException();
     }

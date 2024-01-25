@@ -4,11 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './entities/user.entity'; // User 엔티티 임포트
-import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from './jwt.strategy';
-import { UserService } from './user.service';
 import { AuthModule } from './auth/auth.module';
 
 
@@ -33,6 +30,6 @@ import { AuthModule } from './auth/auth.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, JwtStrategy, UserService],
+  providers: [AppService],
 })
 export class AppModule {}

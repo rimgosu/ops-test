@@ -23,4 +23,7 @@ export class User {
     default: UserRole.MEMBER
   })
   role: UserRole;
+
+  @Column({ default: '' })
+  verificationCode: string;
 }

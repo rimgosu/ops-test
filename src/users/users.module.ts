@@ -6,6 +6,7 @@ import { User } from 'src/entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersController } from './users.controller';
+import { EmailService } from './email.service';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { UsersController } from './users.controller';
     // PassportModule과 JwtModule 제거
   ],
 
-  providers: [UsersService],
+  providers: [UsersService, EmailService],
   exports: [UsersService],
   controllers: [UsersController]
 })

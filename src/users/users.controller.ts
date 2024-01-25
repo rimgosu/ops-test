@@ -8,12 +8,15 @@ import {
     Req,
     Request,
     UnauthorizedException,
+    UseGuards,
   } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { RegisterDto } from 'src/dto/register.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { Public } from 'src/auth/decorators/public.decorator';
-import { UserRole } from 'src/entities/user.entity';
+import { User, UserRole } from 'src/entities/user.entity';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from './decorators/get-user.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -53,6 +56,17 @@ export class UsersController {
 
       // 응답 반환 (비밀번호 정보는 제외)
       return { username: registerDto.username };
+  }
+
+  @Post('/sendcode')
+  sendCode(@GetUser() user: User) {
+    // 여기서 보내는 user: jwt 토큰에 담겨있는 user 정보임.
+    return this.usersService.sendVerificationCode(user);
+  }
+
+  @Post('/confirmcode')
+  confirmCode(@Body('verificationCode') code: string, @GetUser() user: User) {
+    return this.usersService.confirmVerificationCode(code, user);
   }
 
 }

@@ -17,15 +17,15 @@ export class EmailService {
     this.transporter = nodemailer.createTransport({
       service: 'naver',
       auth: {
-        user: 'practice93@naver.com',
-        pass: '1234',
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
       },
     });
   }
 
   async sendVerificationToEmail(email: string, code: string): Promise<void> {
     const emailOptions: EmailOptions = {
-      from: 'your_email@naver.com',
+      from: 'practice93@naver.com',
       to: email,
       subject: '가입 인증 메일',
       html: `<h1>인증 코드: ${code}</h1>`,

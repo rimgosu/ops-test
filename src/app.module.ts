@@ -9,9 +9,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { UserService } from './user.service';
+import { AuthModule } from './auth/auth.module';
+
 
 @Module({
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forRoot({
       type: 'mysql',

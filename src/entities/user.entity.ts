@@ -24,9 +24,13 @@ export class User {
   })
   role: UserRole;
 
-  @Column({ default: '' })
+  // 가입시 말도 안되게 어려운 코드로 설정하여 허위 인증 방지
+  @Column({ default: Math.random().toString(36) })
   verificationCode: string;
 
   @Column({ default: false })
   isVerified: boolean;
+
+  @Column({ nullable: true })
+  refreshToken: string;
 }

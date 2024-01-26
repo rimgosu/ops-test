@@ -11,8 +11,7 @@ import { EmailService } from './email.service';
 @Module({
   imports: [
     forwardRef(() => AuthModule), // 순환 의존성 해결
-    TypeOrmModule.forFeature([User]),
-    // PassportModule과 JwtModule 제거
+    TypeOrmModule.forFeature([User])
   ],
 
   providers: [UsersService, EmailService],

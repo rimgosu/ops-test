@@ -50,6 +50,12 @@ export class AuthController {
     return { message: '비밀번호가 변경되었습니다.' };
   }
 
+  @Public()
+  @Post('refresh')
+  async refresh(@Body('refresh_token') refreshToken: string): Promise<{ access_token: string }> {
+    return await this.authService.refreshAccessToken(refreshToken);
+  }
+
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

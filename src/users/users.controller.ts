@@ -65,8 +65,8 @@ export class UsersController {
   }
 
   @Post('/confirmcode')
-  confirmCode(@Body('verificationCode') code: string, @GetUser() user: User) {
-    return this.usersService.confirmVerificationCode(code, user);
+  async confirmCode(@Body('verificationCode') code: string, @GetUser() userToken: User) {
+    return { "isVerified": await this.usersService.confirmVerificationCode(code, userToken) };
   }
 
 }

@@ -21,9 +21,7 @@ export class EmailService {
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
-      },
-      debug: true, // 디버깅 로그 활성화
-      logger: true  // 로거 활성화 (콘솔에 로그 출력)
+      }
     });
   }
 

@@ -32,7 +32,7 @@ export class UsersService {
   }
 
   async sendVerificationCode(userToken: User): Promise<void> {
-    const code = 'verifycode'; /* 인증 코드 생성 로직 */
+    const code = Math.random().toString(36).substring(2, 10);
 
     // 유저 정보 가져오기
     const user = await this.findByUsername(userToken.username);
@@ -53,7 +53,8 @@ export class UsersService {
     // user 객체에서 verificationCode 필드를 검사
     if (user.verificationCode === code) {
       // 코드가 일치하면 사용자의 인증 상태 업데이트
-      // 예: user.isVerified = true;
+      user.isVerified = true;
+
       await this.userRepository.save(user);
       return true; // 인증 성공
     } else {

@@ -31,8 +31,12 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  async sendVerificationCode(user: User): Promise<void> {
+  async sendVerificationCode(userToken: User): Promise<void> {
     const code = 'verifycode'; /* 인증 코드 생성 로직 */
+
+    // 유저 정보 가져오기
+    const user = this.findByUsername(userToken.username);
+
     user.verificationCode = code;
     
     console.log(user);

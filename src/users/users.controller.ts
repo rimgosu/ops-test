@@ -59,9 +59,9 @@ export class UsersController {
   }
 
   @Post('/sendcode')
-  sendCode(@GetUser() user: User) {
-    // 여기서 보내는 user: jwt 토큰 자체 정보임.
-    return this.usersService.sendVerificationCode(user);
+  sendCode(@GetUser() userToken: User) {
+    // 여기서 @GetUser는 jwt 토큰 자체 정보를 가져옴
+    return this.usersService.sendVerificationCode(userToken);
   }
 
   @Post('/confirmcode')

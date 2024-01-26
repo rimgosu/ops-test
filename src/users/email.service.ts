@@ -13,17 +13,23 @@ interface EmailOptions {
 export class EmailService {
   private transporter;
 
+  
   constructor() {
+
     this.transporter = nodemailer.createTransport({
       service: 'naver',
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,
       },
+      debug: true, // 디버깅 로그 활성화
+      logger: true  // 로거 활성화 (콘솔에 로그 출력)
     });
   }
 
   async sendVerificationToEmail(email: string, code: string): Promise<void> {
+
+    
     const emailOptions: EmailOptions = {
       from: 'practice93@naver.com',
       to: email,

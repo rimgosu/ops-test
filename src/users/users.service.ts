@@ -35,7 +35,7 @@ export class UsersService {
     const code = 'verifycode'; /* 인증 코드 생성 로직 */
 
     // 유저 정보 가져오기
-    const user = this.findByUsername(userToken.username);
+    const user = await this.findByUsername(userToken.username);
 
     user.verificationCode = code;
     
@@ -46,7 +46,19 @@ export class UsersService {
     await this.emailService.sendVerificationToEmail(user.username, code);
   }
   
-  async confirmVerificationCode(code: string, user: User) {
-    // 인증 코드 확인 로직
+  async confirmVerificationCode(code: string, userToken: User): Promise<boolean> {
+
+    const user = await this.findByUsername(userToken.username);
+
+    // user 객체에서 verificationCode 필드를 검사
+    if (user.verificationCode === code) {
+      // 코드가 일치하면 사용자의 인증 상태 업데이트
+      // 예: user.isVerified = true;
+      await this.userRepository.save(user);
+      return true; // 인증 성공
+    } else {
+      return false; // 인증 실패
+    }
   }
+  
 }

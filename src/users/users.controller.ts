@@ -33,13 +33,15 @@ export class UsersController {
     return { username: user.username };
   }
 
-  @Post('/sendcode')
+  @Post('sendcode')
   sendCode(@GetUser() userToken: User) {
+    console.log('userToken in controller = ' + userToken);
+    
     // 여기서 @GetUser는 jwt 토큰 자체 정보를 가져옴
     return this.usersService.sendVerificationCode(userToken);
   }
 
-  @Post('/confirmcode')
+  @Post('confirmcode')
   async confirmCode(@Body('verificationCode') code: string, @GetUser() userToken: User) {
     return { "isVerified": await this.usersService.confirmVerificationCode(code, userToken) };
   }

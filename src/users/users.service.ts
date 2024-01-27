@@ -36,6 +36,10 @@ export class UsersService {
   }
 
   async sendVerificationCode(userToken: User): Promise<void> {
+
+    console.log('userToken = '+ userToken);
+    
+
     const code = Math.random().toString(36).substring(2, 10);
 
     // 유저 정보 가져오기

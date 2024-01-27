@@ -1,4 +1,4 @@
-git pull origin bogyeong 
+git pull origin master 
 git add .
 git commit -m "$(date)"
-git push origin bogyeong
+git push origin master

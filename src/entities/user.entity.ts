@@ -33,4 +33,10 @@ export class User {
 
   @Column({ nullable: true })
   refreshToken: string;
+
+  @Column({ default: 0 })
+  loginAttempts: number;
+
+  @Column({ default: false })
+  isLoggedIn: boolean;
 }

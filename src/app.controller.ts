@@ -1,7 +1,14 @@
 // app.controller.ts
-import { Controller} from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { Public } from './auth/decorators/public.decorator';
 
-@Controller('user')
+@Controller()
 export class AppController {
+
+    @Get()
+    @Public()
+    async getAllUsers() {
+        return 'hello world';
+    }
 
 }

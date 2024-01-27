@@ -37,6 +37,6 @@ export class User {
   @Column({ default: 0 })
   loginAttempts: number;
 
-  @Column({ default: false })
-  isLoggedIn: boolean;
+  @Column({ nullable: true })
+  accessToken: string;
 }

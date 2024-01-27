@@ -3,8 +3,6 @@ import { UsersService } from './users.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
 import { UsersController } from './users.controller';
 import { EmailService } from './email.service';
 

@@ -30,23 +30,7 @@ export class AuthController {
 
   @Patch('change-password')
   async changePassword(@Req() req, @Body() changePasswordDto: ChangePasswordDto) {
-    const user = await this.usersService.findByUsername(req.user.username);
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-
-    const { currentPassword, newPassword } = changePasswordDto;
-
-    // 현재 비밀번호 확인
-    const isPasswordValid = await this.authService.comparePasswords(currentPassword, user.password);
-    if (!isPasswordValid) {
-      throw new Error('현재 비밀번호가 일치하지 않습니다.');
-    }
-
-    // 새 비밀번호 해싱 및 저장
-    const hashedPassword = await this.authService.hashPassword(newPassword);
-    await this.usersService.updatePassword(user.id, hashedPassword);
-
+    await this.authService.changePassword(req.user.username, changePasswordDto.currentPassword, changePasswordDto.newPassword);
     return { message: '비밀번호가 변경되었습니다.' };
   }
 

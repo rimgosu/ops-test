@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
@@ -12,6 +12,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @Inject(forwardRef(() => UsersService))
     private usersService: UsersService,
     private jwtService: JwtService,
   ) { }
@@ -60,6 +61,21 @@ export class AuthService {
 
       throw new UnauthorizedException('Refresh token is invalid');
     }
+  }
+
+  async changePassword(username: string, currentPassword: string, newPassword: string): Promise<void> {
+    const user = await this.usersService.findByUsername(username);
+    if (!user) {
+      throw new UnauthorizedException('사용자를 찾을 수 없습니다.');
+    }
+
+    const isPasswordValid = await this.comparePasswords(currentPassword, user.password);
+    if (!isPasswordValid) {
+      throw new Error('현재 비밀번호가 일치하지 않습니다.');
+    }
+
+    const hashedPassword = await this.hashPassword(newPassword);
+    await this.usersService.updatePassword(user.id, hashedPassword);
   }
 
   // 비밀번호 해시 생성

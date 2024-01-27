@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException, forwardRef } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { User, UserRole } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EmailService } from './email.service';
+import { RegisterDto } from 'src/dto/register.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UsersService {
@@ -10,7 +12,9 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private emailService: EmailService
+    private emailService: EmailService,
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService
   ) {}
 
   async findByUsername(username: string): Promise<User | undefined> {
@@ -60,6 +64,37 @@ export class UsersService {
     } else {
       return false; // 인증 실패
     }
+  }
+
+  async getAllUsers(userRole: string): Promise<User[]> {
+    if (userRole !== UserRole.ADMIN) {
+      throw new UnauthorizedException('관리자만 접근 가능합니다.');
+    }
+
+    return await this.userRepository.find();
+  }
+
+  async register(registerDto: RegisterDto): Promise<User> {
+    const { username, password } = registerDto;
+
+    // 이메일 중복 검사
+    const existingUser = await this.findByUsername(username);
+    if (existingUser) {
+      throw new Error('이미 존재하는 이메일입니다.');
+    }
+
+    // 비밀번호 해싱
+    const hashedPassword = await this.authService.hashPassword(password);
+
+    // 사용자 정보 저장
+    const newUser = this.userRepository.create({
+      ...registerDto,
+      password: hashedPassword,
+    });
+
+    await this.userRepository.save(newUser);
+
+    return newUser;
   }
   
 }

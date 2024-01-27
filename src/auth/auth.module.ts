@@ -11,8 +11,8 @@ import { User } from 'src/entities/user.entity';
 
 @Module({
   imports: [
+    forwardRef(() => UsersModule),
     TypeOrmModule.forFeature([User]),
-    UsersModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,

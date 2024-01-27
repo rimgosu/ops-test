@@ -42,11 +42,21 @@ export class AuthService {
 
     console.log('refreshToken : ' + refreshToken);
 
+
     try {
+
+      // refreshToken으로 사용자 검색
+      const userForFindRefreshToken = await this.usersService.findByRefreshToken(refreshToken);
+      if (!userForFindRefreshToken) {
+        throw new UnauthorizedException('Refresh token does not exist');
+      }
+
       const payload = await this.jwtService.verifyAsync(refreshToken);
 
       // 'exp' 속성 제거
       delete payload.exp;
+
+
 
       const newAccessToken = await this.jwtService.signAsync(payload, {
         expiresIn: '60s'

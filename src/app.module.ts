@@ -14,13 +14,14 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forRoot({
+      // aws rds 연결
       type: 'mysql',
-      host: 'localhost',
+      host: 'database-9.cx6dp2mhue1c.ap-northeast-2.rds.amazonaws.com', // docker : 'localhost'
       port: 3306,
-      username: 'root',
-      password: '1234',
-      database: 'opstest',
-      entities: [User], // User 엔티티 등록
+      username: 'admin', // docker : 'root'
+      password: process.env.AWS_RDS_PSWD, // docker : '1234'
+      database: 'opstest', // docker : 'opstest'
+      entities: [User], 
       synchronize: true,
     }),
     PassportModule,

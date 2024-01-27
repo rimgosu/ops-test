@@ -21,6 +21,10 @@ export class UsersService {
     return this.userRepository.findOne({ where: { username } });
   }
 
+  async findByRefreshToken(refreshToken: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { refreshToken } });
+  }
+
 
   async createUser(userData: any): Promise<void> {
     const user = this.userRepository.create(userData);

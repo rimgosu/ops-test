@@ -31,7 +31,9 @@ export class AuthService {
     await this.userRepository.save(user);
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: await this.jwtService.signAsync(payload, {
+        expiresIn: '60s'
+      }),
       refresh_token,
     };
   }
@@ -42,9 +44,17 @@ export class AuthService {
     
     try {
       const payload = await this.jwtService.verifyAsync(refreshToken);
-      const newAccessToken = await this.jwtService.signAsync(payload);
+
+      // 'exp' 속성 제거
+      delete payload.exp;
+
+      const newAccessToken = await this.jwtService.signAsync(payload, {
+        expiresIn: '60s'
+      });
       return { access_token: newAccessToken };
     } catch (error) {
+      console.log(error);
+      
       throw new UnauthorizedException('Refresh token is invalid');
     }
   }
